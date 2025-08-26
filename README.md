@@ -59,3 +59,9 @@
   ```sh
   mypy .
   ```
+
+5. Fix formatting using black
+
+  ```sh
+  black .
+  ```
