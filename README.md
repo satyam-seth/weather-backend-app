@@ -71,3 +71,9 @@
   ```sh
   isort .
   ```
+
+7. Run pylint for code quality checks
+
+  ```sh
+  pylint **/*.py
+  ```
