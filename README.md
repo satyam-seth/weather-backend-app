@@ -53,3 +53,9 @@
   ```sh
   coverage html
   ```
+
+4. Run mypy type checking
+
+  ```sh
+  mypy .
+  ```
