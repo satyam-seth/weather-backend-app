@@ -65,3 +65,9 @@
   ```sh
   black .
   ```
+
+6. Sort imports using isort
+
+  ```sh
+  isort .
+  ```
