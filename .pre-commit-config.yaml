@@ -35,3 +35,18 @@ repos:
           - djangorestframework==3.16.0
           - djangorestframework-stubs==3.16.1
         args: ["--config-file=mypy.ini"]
+
+  - repo: https://github.com/pycqa/pylint
+    rev: v3.3.7
+    hooks:
+      - id: pylint
+        name: pylint to check code quality
+        entry: pylint
+        language: python
+        types: [python]
+        args: ["--rcfile=.pylintrc"]
+        additional_dependencies:
+          - django-jazzmin==3.0.1
+          - Django==5.2.4
+          - pylint-django==2.6.1
+          - djangorestframework==3.16.0
