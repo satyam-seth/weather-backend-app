@@ -77,3 +77,17 @@
   ```sh
   pylint **/*.py
   ```
+
+8. Pre Commit Hook
+
+- Install pre commit dependencies
+
+  ```sh
+  pre-commit install
+  ```
+
+- Run pre-commit hooks manually
+
+  ```sh
+  pre-commit run --all-files
+  ```
