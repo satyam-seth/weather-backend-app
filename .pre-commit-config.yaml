@@ -11,3 +11,15 @@ repos:
     hooks:
       - id: black
         name: black to format python code
+
+  - repo: https://github.com/pycqa/isort
+    rev: 6.0.1
+    hooks:
+      - id: isort
+        name: isort to sort imports
+        args:
+          - --profile
+          - black
+          - --verbose
+          - --skip-glob
+          - "**/migrations/*.py"
