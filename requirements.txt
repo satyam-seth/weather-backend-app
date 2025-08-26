@@ -6,3 +6,5 @@ django-stubs==5.2.2
 djangorestframework-stubs==3.16.1
 black==25.1.0
 isort==6.0.1
+pylint==3.3.7
+pylint-django==2.6.1
