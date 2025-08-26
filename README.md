@@ -91,3 +91,17 @@
   ```sh
   pre-commit run --all-files
   ```
+
+9. Setup pre push hook
+
+- for linux or macos
+
+  ```sh
+  cp .githooks/pre-push .git/hooks/pre-push && chmod +x .git/hooks/pre-push
+  ```
+
+- for windowns
+
+  ```sh
+  copy .githooks\pre-push .git\hooks\pre-push
+  ```
