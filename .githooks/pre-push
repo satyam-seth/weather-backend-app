@@ -1,0 +1,19 @@
+#!/bin/bash
+
+echo "Running tests with coverage..."
+
+coverage run manage.py test
+status=$?
+
+if [ $status -ne 0 ]; then
+  echo "❌ Tests failed. Push aborted."
+  exit 1
+fi
+
+coverage report --fail-under=85  # set your threshold
+if [ $? -ne 0 ]; then
+  echo "❌ Coverage is below threshold. Push aborted."
+  exit 1
+fi
+
+echo "✅ Tests passed and coverage is acceptable. Proceeding with push."
