@@ -23,3 +23,15 @@ repos:
           - --verbose
           - --skip-glob
           - "**/migrations/*.py"
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.17.0
+    hooks:
+      - id: mypy
+        name: mypy to check types
+        additional_dependencies:
+          - django-jazzmin==3.0.1
+          - django-stubs==5.2.2
+          - djangorestframework==3.16.0
+          - djangorestframework-stubs==3.16.1
+        args: ["--config-file=mypy.ini"]
