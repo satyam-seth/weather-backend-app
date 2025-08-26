@@ -113,3 +113,11 @@
 - Type @recommended in the search bar
 
 - Install the recommended extensions
+
+11. Setup VS Code test runner
+
+- Add manage.py path variable in `.env` file
+
+  ```env
+  MANAGE_PY_PATH=manage.py
+  ```
