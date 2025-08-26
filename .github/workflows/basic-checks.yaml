@@ -1,0 +1,42 @@
+name: 🚦 Basic Checks
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  quality-checks:
+    name: Quality Checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🐍 Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 📦 Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: 🎨 Run black (formatting)
+        run: black --check .
+
+      - name: 🧹 Run isort (import sorting)
+        run: isort --check-only .
+
+      - name: 🧐 Run mypy (type checking)
+        run: mypy .
+
+      - name: 🔍 Run pylint (linting)
+        run: pylint **/*.py
+
+      - name: 🧪 Run tests with coverage
+        run: coverage run manage.py test
+
+      - name: 📊 Generate coverage report (fail if <85%)
+        run: coverage report --fail-under=85
