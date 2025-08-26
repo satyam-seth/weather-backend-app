@@ -4,6 +4,7 @@ from django.test import TestCase
 
 
 class DummyTestCase(TestCase):
+    """Dummy Test Case"""
 
     def test_dummy(self):
         """A dummy test that always passes"""
