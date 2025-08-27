@@ -17,10 +17,12 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import include, path
+from drf_spectacular.views import SpectacularAPIView
 
 from climate.routes import climate_router
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include(climate_router.urls)),
+    path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
 ]
