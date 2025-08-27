@@ -4,7 +4,7 @@ from .models import ClimateRecord
 from .serializers import ClimateRecordSerializer
 
 
-class ClimateRecordViewSet(ReadOnlyModelViewSet):
+class ClimateRecordViewSet(ReadOnlyModelViewSet):  # pylint: disable=too-many-ancestors
     """Climate Record ViewSet"""
 
     queryset = ClimateRecord.objects.all()
