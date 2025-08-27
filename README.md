@@ -56,27 +56,27 @@
 
 4. Run mypy type checking
 
-  ```sh
-  mypy .
-  ```
+```sh
+mypy .
+```
 
 5. Fix formatting using black
 
-  ```sh
-  black .
-  ```
+```sh
+black .
+```
 
 6. Sort imports using isort
 
-  ```sh
-  isort .
-  ```
+```sh
+isort .
+```
 
 7. Run pylint for code quality checks
 
-  ```sh
-  pylint **/*.py
-  ```
+```sh
+pylint **/*.py
+```
 
 8. Pre Commit Hook
 
@@ -121,3 +121,9 @@
   ```env
   MANAGE_PY_PATH=manage.py
   ```
+
+12. Load climate data from UK MetOffice
+
+```sh
+python3 manage.py load_datasets
+```
