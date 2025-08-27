@@ -127,3 +127,9 @@ pylint **/*.py
 ```sh
 python3 manage.py load_datasets
 ```
+
+13. Generating OpenAPI Schema
+
+```sh
+python3 manage.py spectacular --validate --color --file schema.yml
+```
