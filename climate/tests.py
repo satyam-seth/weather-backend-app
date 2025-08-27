@@ -1,3 +1,4 @@
+from django.db import IntegrityError
 from django.test import TestCase
 from django.utils import timezone
 
@@ -71,3 +72,30 @@ class ClimateRecordModelTest(TestCase):
 
         # Test that updated_on is also set
         self.assertLess(record.updated_on, timezone.now())
+
+    def test_unique_together_constraint(self):
+        """Test the unique_together constraint on dataset and year."""
+
+        # Try to create a duplicate record (same dataset and year)
+        with self.assertRaises(IntegrityError):
+            ClimateRecord.objects.create(
+                dataset="rainfall",
+                year=2023,
+                jan=100.5,
+                feb=110.2,
+                mar=105.7,
+                apr=99.3,
+                may=120.1,
+                jun=115.5,
+                jul=110.0,
+                aug=125.8,
+                sep=105.9,
+                oct=99.8,
+                nov=103.0,
+                dec=108.6,
+                win=102.5,
+                spr=112.3,
+                sum=118.7,
+                aut=98.5,
+                ann=110.4,
+            )
