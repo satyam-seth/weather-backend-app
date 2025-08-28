@@ -27,7 +27,7 @@ jobs:
         run: black --check .
 
       - name: 🧹 Run isort (import sorting)
-        run: isort --check-only .
+        run: isort --profile black --check-only .
 
       - name: 🧐 Run mypy (type checking)
         run: mypy .

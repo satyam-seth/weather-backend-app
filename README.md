@@ -69,7 +69,7 @@ black .
 6. Sort imports using isort
 
 ```sh
-isort .
+isort --profile black --check-only .
 ```
 
 7. Run pylint for code quality checks
