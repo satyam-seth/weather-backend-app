@@ -13,3 +13,5 @@ requests==2.32.5
 types-requests==2.32.4.20250809
 drf-spectacular==0.28.0
 drf-spectacular-sidecar==2024.12.1
+django-filter==25.1
+django-filter-stubs==0.1.3
