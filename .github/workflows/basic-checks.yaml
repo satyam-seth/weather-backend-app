@@ -32,11 +32,11 @@ jobs:
 
       - name: Print Debug
         run: |
-          if [ -z "$DEBUG" ]; then
-            echo "DEBUG is not set"
+          if [ -z "$ALLOWED_HOSTS" ]; then
+            echo "ALLOWED_HOSTS is not set"
             exit 1
           else
-            echo "DEBUG is set successfully"
+            echo "ALLOWED_HOSTS is set successfully"
           fi
 
       - name: 🎨 Run black (formatting)
