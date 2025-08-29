@@ -25,7 +25,7 @@ FIELDS = [
 ]
 
 
-def fetch_and_process_climate_data(url: str, dataset: str) -> None:
+def fetch_and_process_climate_data(url: str, region: str, dataset: str) -> None:
     """Parse data from the Met Office and update/create ClimateRecord entries."""
 
     try:
@@ -52,6 +52,7 @@ def fetch_and_process_climate_data(url: str, dataset: str) -> None:
             # Create or update the record in the database
             ClimateRecord.objects.update_or_create(
                 dataset=dataset,
+                region=region,
                 year=year,
                 defaults=dict(zip(FIELDS, values)),
             )
