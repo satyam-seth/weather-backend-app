@@ -31,7 +31,13 @@ jobs:
           echo "SECRET_KEY=${{ secrets.CORS_ALLOWED_ORIGINS }}" >> $GITHUB_ENV
 
       - name: Print Debug
-        run: echo "DEBUG=$DEBUG"
+        run: |
+          if [ -z "$DEBUG" ]; then
+            echo "DEBUG is not set"
+            exit 1
+          else
+            echo "DEBUG is set successfully"
+          fi
 
       - name: 🎨 Run black (formatting)
         run: black --check .
