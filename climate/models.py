@@ -65,7 +65,8 @@ class ClimateRecord(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=["dataset", "year"], name="unique_dataset_year"
+                fields=["dataset", "region", "year"],
+                name="unique_dataset_region_year",
             )
         ]
 
