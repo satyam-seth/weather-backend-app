@@ -4,38 +4,43 @@ from django.db import models
 class ClimateRecord(models.Model):
     """Climate Record"""
 
-    REGIONS = [
-        ("UK", "UK"),
-        ("England", "England"),
-        ("Wales", "Wales"),
-        ("Scotland", "Scotland"),
-        ("Northern_Ireland", "Northern Ireland"),
-        ("England_and_Wales", "England and Wales"),
-        ("England_N", "England North"),
-        ("England_S", "England South"),
-        ("Scotland_N", "Scotland North"),
-        ("Scotland_E", "Scotland East"),
-        ("Scotland_W", "Scotland West"),
-        ("England_E_and_NE", "England East & NE"),
-        ("England_NW_and_N_Wales", "England NW & N Wales"),
-        ("Midlands", "Midlands"),
-        ("East_Anglia", "East Anglia"),
-        ("England_SW_and_S_Wales", "England SW & S Wales"),
-        ("England_SE_and_Central_S", "England SE & Central South"),
-    ]
+    class Dataset(models.TextChoices):
+        """Dataset Choices"""
 
-    DATASETS = [
-        ("air_frost", "Air Frost"),
-        ("raindays", "Rain Days ≥1mm"),
-        ("rainfall", "Rainfall"),
-        ("sunshine", "Sunshine"),
-        ("tmean", "Mean Temperature"),
-        ("tmin", "Minimum Temperature"),
-        ("tmax", "Maximum Temperature"),
-    ]
+        AIR_FROST = "air_frost", "Air Frost"
+        RAIN_DAYS = "raindays", "Rain Days ≥1mm"
+        RAINFALL = "rainfall", "Rainfall"
+        SUNSHINE = "sunshine", "Sunshine"
+        TMEAN = "tmean", "Mean Temperature"
+        TMIN = "tmin", "Minimum Temperature"
+        TMAX = "tmax", "Maximum Temperature"
 
-    region = models.CharField(max_length=40, choices=REGIONS)
-    dataset = models.CharField(max_length=20, choices=DATASETS)
+    class Region(models.TextChoices):
+        """Region Choices"""
+
+        UK = "UK", "UK"
+        ENGLAND = "England", "England"
+        WALES = "Wales", "Wales"
+        SCOTLAND = "Scotland", "Scotland"
+        NORTHERN_IRELAND = "Northern_Ireland", "Northern Ireland"
+        ENGLAND_AND_WALES = "England_and_Wales", "England and Wales"
+        ENGLAND_N = "England_N", "England North"
+        ENGLAND_S = "England_S", "England South"
+        SCOTLAND_N = "Scotland_N", "Scotland North"
+        SCOTLAND_E = "Scotland_E", "Scotland East"
+        SCOTLAND_W = "Scotland_W", "Scotland West"
+        ENGLAND_E_AND_NE = "England_E_and_NE", "England East and NE"
+        ENGLAND_NW_AND_N_WALES = "England_NW_and_N_Wales", "England NW and North Wales"
+        MIDLANDS = "Midlands", "Midlands"
+        EAST_ANGLIA = "East_Anglia", "East Anglia"
+        ENGLAND_SW_AND_S_WALES = "England_SW_and_S_Wales", "England SW and South Wales"
+        ENGLAND_SE_AND_CENTRAL_S = (
+            "England_SE_and_Central_S",
+            "England SE and Central South",
+        )
+
+    dataset = models.CharField(max_length=20, choices=Dataset.choices)
+    region = models.CharField(max_length=50, choices=Region.choices)
     year = models.PositiveIntegerField()
 
     # Monthly values
