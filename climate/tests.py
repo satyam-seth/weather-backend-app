@@ -12,6 +12,7 @@ class ClimateRecordModelTest(TestCase):
         """Setup data for tests."""
         self.climate_record = ClimateRecord.objects.create(
             dataset="rainfall",
+            region="UK",
             year=2023,
             jan=100.5,
             feb=110.2,
@@ -40,6 +41,7 @@ class ClimateRecordModelTest(TestCase):
 
         # Assert dataset and year
         self.assertEqual(record.dataset, "rainfall")
+        self.assertEqual(record.region, "UK")
         self.assertEqual(record.year, 2023)
 
         # Assert monthly values
@@ -80,6 +82,7 @@ class ClimateRecordModelTest(TestCase):
         with self.assertRaises(IntegrityError):
             ClimateRecord.objects.create(
                 dataset="rainfall",
+                region="UK",
                 year=2023,
                 jan=100.5,
                 feb=110.2,
