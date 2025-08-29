@@ -4,6 +4,26 @@ from django.db import models
 class ClimateRecord(models.Model):
     """Climate Record"""
 
+    REGIONS = [
+        ("UK", "UK"),
+        ("England", "England"),
+        ("Wales", "Wales"),
+        ("Scotland", "Scotland"),
+        ("Northern_Ireland", "Northern Ireland"),
+        ("England_and_Wales", "England and Wales"),
+        ("England_N", "England North"),
+        ("England_S", "England South"),
+        ("Scotland_N", "Scotland North"),
+        ("Scotland_E", "Scotland East"),
+        ("Scotland_W", "Scotland West"),
+        ("England_E_and_NE", "England East & NE"),
+        ("England_NW_and_N_Wales", "England NW & N Wales"),
+        ("Midlands", "Midlands"),
+        ("East_Anglia", "East Anglia"),
+        ("England_SW_and_S_Wales", "England SW & S Wales"),
+        ("England_SE_and_Central_S", "England SE & Central South"),
+    ]
+
     DATASETS = [
         ("air_frost", "Air Frost"),
         ("raindays", "Rain Days ≥1mm"),
@@ -14,6 +34,7 @@ class ClimateRecord(models.Model):
         ("tmax", "Maximum Temperature"),
     ]
 
+    region = models.CharField(max_length=40, choices=REGIONS)
     dataset = models.CharField(max_length=20, choices=DATASETS)
     year = models.PositiveIntegerField()
 
