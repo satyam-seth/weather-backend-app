@@ -133,3 +133,8 @@ python3 manage.py load_datasets
 ```sh
 python3 manage.py spectacular --validate --color --file schema.yml
 ```
+
+14. Setup required environment variables for github workflow
+
+<img width="1400" height="470" alt="image" src="https://github.com/user-attachments/assets/eb0a4fe3-afb4-4ca6-80aa-6e61ad58143f" />
+
