@@ -4,7 +4,7 @@ from django.db import models
 class ClimateRecord(models.Model):
     """Climate Record"""
 
-    class Dataset(models.TextChoices):
+    class Dataset(models.TextChoices):  # pylint: disable=too-many-ancestors
         """Dataset Choices"""
 
         AIR_FROST = "air_frost", "Air Frost"
@@ -15,7 +15,7 @@ class ClimateRecord(models.Model):
         TMIN = "tmin", "Minimum Temperature"
         TMAX = "tmax", "Maximum Temperature"
 
-    class Region(models.TextChoices):
+    class Region(models.TextChoices):  # pylint: disable=too-many-ancestors
         """Region Choices"""
 
         UK = "UK", "UK"
