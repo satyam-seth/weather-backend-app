@@ -10,6 +10,7 @@ class ClimateRecordModelAdmin(admin.ModelAdmin):
     list_display = (
         "id",
         "year",
+        "region",
         "dataset",
         "jan",
         "feb",
