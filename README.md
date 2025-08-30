@@ -1,40 +1,66 @@
-# weather-backend-app
+# Weather Backend App
+
+A Django REST Framework backend for accessing climate datasets from the UK MetOffice.
+
+## 🚀 Access Deployed Project
+
+- [Admin Panel](https://weatherapi.pythonanywhere.com/admin/)
+- [Browsable API](https://weatherapi.pythonanywhere.com/api/climate/)
+- [Swagger UI](https://weatherapi.pythonanywhere.com/api/schema/swagger-ui/)
+- [ReDoc](https://weatherapi.pythonanywhere.com/api/schema/redoc/)
+- [Download OpenAPI Schema](https://weatherapi.pythonanywhere.com/api/schema/)
+
+## Local Setup
 
 1. Create Virtual Environment
 
-- if windows
-
-  ```bash
-  python -m venv .venv
-  ```
-
-- if mac or linux
-
-  ```bash
-  python3 -m venv .venv
-  ```
+```sh
+python3 -m venv .venv
+```
 
 2. Activate Virtual Environment
 
-- if windows
+```bash
+source .venv/bin/activate
+```
 
-  ```bash
-  source .venv/Scripts/activate
-  ```
+3. Install Required Dependencies
 
-- if mac or linux
+```sh
+pip install -r requirements.txt
+```
 
-  ```bash
-  source .venv/bin/activate
-  ```
+4. Apply Migrations
 
-- Note:- if you want to deactivate
+```sh
+python3 manage.py migrate
+```
 
-  ```bash
-  deactivate
-  ```
+5. Create `.env` file and add required environment variables
 
-3. Test Coverage
+```env
+MANAGE_PY_PATH=manage.py
+SECRET_KEY="<django-secret-key>"
+DEBUG=True
+ALLOWED_HOSTS=127.0.0.1,localhost
+CORS_ALLOWED_ORIGINS=http://127.0.0.1:5173,http://localhost:5173
+```
+
+6. Load climate data from UK MetOffice
+
+```sh
+python3 manage.py load_datasets
+```
+
+7. Run server
+
+```sh
+python3 manage.py runserver
+```
+
+## Development
+
+1. Test Coverage
 
 - Run tests with coverage
 
@@ -54,31 +80,31 @@
   coverage html
   ```
 
-4. Run mypy type checking
+2. Run mypy type checking
 
 ```sh
 mypy .
 ```
 
-5. Fix formatting using black
+3. Fix formatting using black
 
 ```sh
 black .
 ```
 
-6. Sort imports using isort
+4. Sort imports using isort
 
 ```sh
 isort --profile black --check-only .
 ```
 
-7. Run pylint for code quality checks
+5. Run pylint for code quality checks
 
 ```sh
 pylint **/*.py
 ```
 
-8. Pre Commit Hook
+6. Pre Commit Hook
 
 - Install pre commit dependencies
 
@@ -92,21 +118,13 @@ pylint **/*.py
   pre-commit run --all-files
   ```
 
-9. Setup pre push hook
+7. Setup pre push hook
 
-- for linux or macos
+```sh
+cp .githooks/pre-push .git/hooks/pre-push && chmod +x .git/hooks/pre-push
+```
 
-  ```sh
-  cp .githooks/pre-push .git/hooks/pre-push && chmod +x .git/hooks/pre-push
-  ```
-
-- for windowns
-
-  ```sh
-  copy .githooks\pre-push .git\hooks\pre-push
-  ```
-
-10. Install recommended VS Code extensions
+8. Install recommended VS Code extensions
 
 - Open the extensions sidebar in VS Code `ctrl+shift+x` or `cmd+shift+x`
 
@@ -114,7 +132,7 @@ pylint **/*.py
 
 - Install the recommended extensions
 
-11. Setup VS Code test runner
+9. Setup VS Code test runner
 
 - Add manage.py path variable in `.env` file
 
@@ -122,19 +140,24 @@ pylint **/*.py
   MANAGE_PY_PATH=manage.py
   ```
 
-12. Load climate data from UK MetOffice
+10. Load climate data from UK MetOffice
 
 ```sh
 python3 manage.py load_datasets
 ```
 
-13. Generating OpenAPI Schema
+11. Generating OpenAPI Schema
 
 ```sh
 python3 manage.py spectacular --validate --color --file schema.yml
 ```
 
-14. Setup required environment variables for github workflow
+12. Setup required environment variables for github workflow
 
 <img width="1400" height="470" alt="image" src="https://github.com/user-attachments/assets/eb0a4fe3-afb4-4ca6-80aa-6e61ad58143f" />
 
+13. Create super user
+
+```sh
+python manage.py createsuperuser
+```
