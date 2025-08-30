@@ -161,3 +161,8 @@ python3 manage.py spectacular --validate --color --file schema.yml
 ```sh
 python manage.py createsuperuser
 ```
+
+## Related Project
+
+🔗 Web App: [Weather Frontend Repository](https://github.com/satyam-seth/weather-web-app)
+
