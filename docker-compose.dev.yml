@@ -1,0 +1,15 @@
+services:
+  backend:
+    container_name: weather-backend-app
+    image: weather-backend-app
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/weather-backend-app
+      - ./db:/weather-backend-app/db
+    ports:
+      - "8000:8000"
+    env_file:
+      - ".env"
