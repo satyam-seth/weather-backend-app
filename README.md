@@ -161,3 +161,53 @@ python3 manage.py spectacular --validate --color --file schema.yml
 ```sh
 python manage.py createsuperuser
 ```
+
+# Use docker for development
+
+1. Build and start containers
+
+```sh
+docker-compose -f docker-compose.dev.yml up --build
+```
+
+2. Start in detached mode
+
+```sh
+docker-compose -f docker-compose.dev.yml up -d
+```
+
+3. Stop containers
+
+```sh
+docker-compose -f docker-compose.dev.yml down
+```
+
+4. Open a shell inside backend service container
+
+```sh
+docker-compose -f docker-compose.dev.yml exec backend bash
+```
+
+- Note: Run any Django command inside the container
+
+```sh
+python manage.py <command>
+```
+
+- Shortcut without opening shell
+
+```sh
+docker-compose -f docker-compose.dev.yml exec backend python manage.py <command>
+```
+
+5. See backend service container logs
+
+```sh
+docker-compose -f docker-compose.dev.yml logs -f backend
+```
+
+6. Restart backend service
+
+```sh
+docker-compose -f docker-compose.dev.yml restart backend
+```
