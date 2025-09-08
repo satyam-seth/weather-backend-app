@@ -9,6 +9,8 @@ class ClimateRegion(models.Model):
         indexes = [
             models.Index(fields=["region"]),
         ]
+        verbose_name = "Climate Region"
+        verbose_name_plural = "Climate Regions"
 
     class Region(models.TextChoices):  # pylint: disable=too-many-ancestors
         """Region Choices"""
@@ -51,6 +53,8 @@ class ClimateParameter(models.Model):
         indexes = [
             models.Index(fields=["parameter"]),
         ]
+        verbose_name = "Climate Parameter"
+        verbose_name_plural = "Climate Parameters"
 
     class Parameter(models.TextChoices):  # pylint: disable=too-many-ancestors
         """Dataset Choices"""
@@ -115,6 +119,8 @@ class ClimateMonthly(models.Model):
                 name="unique_record_month",
             )
         ]
+        verbose_name = "Climate Monthly"
+        verbose_name_plural = "Climate Monthlies"
 
     class Month(models.TextChoices):  # pylint: disable=too-many-ancestors
         """Month Choices"""
@@ -161,6 +167,8 @@ class ClimateSeason(models.Model):
                 name="unique_season_record",
             )
         ]
+        verbose_name = "Climate Season"
+        verbose_name_plural = "Climate Seasons"
 
     class Season(models.TextChoices):
         """Season Choices"""
