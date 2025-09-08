@@ -1,19 +1,14 @@
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
 
-class ClimateRecord(models.Model):
-    """Climate Record"""
+class ClimateRegion(models.Model):
+    """Climate Region"""
 
-    class Dataset(models.TextChoices):  # pylint: disable=too-many-ancestors
-        """Dataset Choices"""
-
-        AIR_FROST = "air_frost", "Air Frost"
-        RAIN_DAYS = "raindays", "Rain Days ≥1mm"
-        RAINFALL = "rainfall", "Rainfall"
-        SUNSHINE = "sunshine", "Sunshine"
-        TMEAN = "tmean", "Mean Temperature"
-        TMIN = "tmin", "Minimum Temperature"
-        TMAX = "tmax", "Maximum Temperature"
+    class Meta:
+        indexes = [
+            models.Index(fields=["region"]),
+        ]
 
     class Region(models.TextChoices):  # pylint: disable=too-many-ancestors
         """Region Choices"""
@@ -39,41 +34,154 @@ class ClimateRecord(models.Model):
             "England SE and Central South",
         )
 
-    dataset = models.CharField(max_length=20, choices=Dataset.choices)
-    region = models.CharField(max_length=50, choices=Region.choices)
-    year = models.PositiveIntegerField()
+    region = models.CharField(
+        max_length=50,
+        choices=Region.choices,
+        help_text="Select the geographical region.",
+    )
 
-    # Monthly values
-    jan = models.FloatField(null=True, blank=True)
-    feb = models.FloatField(null=True, blank=True)
-    mar = models.FloatField(null=True, blank=True)
-    apr = models.FloatField(null=True, blank=True)
-    may = models.FloatField(null=True, blank=True)
-    jun = models.FloatField(null=True, blank=True)
-    jul = models.FloatField(null=True, blank=True)
-    aug = models.FloatField(null=True, blank=True)
-    sep = models.FloatField(null=True, blank=True)
-    oct = models.FloatField(null=True, blank=True)
-    nov = models.FloatField(null=True, blank=True)
-    dec = models.FloatField(null=True, blank=True)
+    def __str__(self) -> str:
+        return self.get_region_display()
 
-    # Seasonal and annual
-    win = models.FloatField(null=True, blank=True)
-    spr = models.FloatField(null=True, blank=True)
-    sum = models.FloatField(null=True, blank=True)
-    aut = models.FloatField(null=True, blank=True)
-    ann = models.FloatField(null=True, blank=True)
 
-    created_on = models.DateTimeField(auto_now_add=True)
-    updated_on = models.DateTimeField(auto_now=True)
+class ClimateParameter(models.Model):
+    """Climate Parameter"""
+
+    class Meta:
+        indexes = [
+            models.Index(fields=["parameter"]),
+        ]
+
+    class Parameter(models.TextChoices):  # pylint: disable=too-many-ancestors
+        """Dataset Choices"""
+
+        AIR_FROST = "air_frost", "Air Frost"
+        RAIN_DAYS = "raindays", "Rain Days ≥1mm"
+        RAINFALL = "rainfall", "Rainfall"
+        SUNSHINE = "sunshine", "Sunshine"
+        TMEAN = "tmean", "Mean Temperature"
+        TMIN = "tmin", "Minimum Temperature"
+        TMAX = "tmax", "Maximum Temperature"
+
+    parameter = models.CharField(
+        max_length=20,
+        choices=Parameter.choices,
+        help_text="The type of climate parameter.",
+    )
+
+    def __str__(self) -> str:
+        return self.get_parameter_display()
+
+
+class ClimateRecord(models.Model):
+    """Climate Record"""
 
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=["dataset", "region", "year"],
-                name="unique_dataset_region_year",
+                fields=["parameter", "region", "year"],
+                name="unique_parameter_region_year",
+            )
+        ]
+        indexes = [
+            models.Index(fields=["region"]),
+            models.Index(fields=["parameter"]),
+        ]
+        verbose_name = "Climate Record"
+        verbose_name_plural = "Climate Records"
+
+    region = models.ForeignKey(to=ClimateRegion, on_delete=models.CASCADE)
+    parameter = models.ForeignKey(to=ClimateParameter, on_delete=models.CASCADE)
+    year = models.PositiveIntegerField(
+        help_text="The year this climate data refers to."
+    )
+    created_on = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.get_parameter_display()} - {self.region.get_region_display()} - {self.year}"
+
+
+class ClimateMonthly(models.Model):
+    """Climate Monthly Data"""
+
+    class Meta:
+        indexes = [
+            models.Index(fields=["record", "month"]),
+        ]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["record", "month"],
+                name="unique_record_month",
             )
         ]
 
+    class Month(models.TextChoices):  # pylint: disable=too-many-ancestors
+        """Month Choices"""
+
+        JAN = 1, "January"
+        FEB = 2, "February"
+        MAR = 3, "March"
+        APR = 4, "April"
+        MAY = 5, "May"
+        JUN = 6, "June"
+        JUL = 7, "July"
+        AUG = 8, "August"
+        SEP = 9, "September"
+        OCT = 10, "October"
+        NOV = 11, "November"
+        DEC = 12, "December"
+
+    month = models.PositiveSmallIntegerField(
+        choices=Month.choices,
+        validators=[MinValueValidator(1), MaxValueValidator(12)],
+        help_text="The month of the data, from 1 (January) to 12 (December).",
+    )
+    data = models.FloatField(null=True, blank=True)
+    record = models.ForeignKey(
+        to=ClimateRecord,
+        on_delete=models.CASCADE,
+        related_name="monthly_data",
+    )
+
     def __str__(self):
-        return f"{self.get_dataset_display()} - {self.year}"
+        return f"{self.record.get_parameter_display()} - {self.record.year} - {self.get_month_display()}"
+
+
+class ClimateSeason(models.Model):
+    """Climate Seasonal Data"""
+
+    class Meta:
+        indexes = [
+            models.Index(fields=["record", "season"]),
+        ]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["season", "record"],
+                name="unique_season_record",
+            )
+        ]
+
+    class Season(models.TextChoices):
+        """Season Choices"""
+
+        win = "win", "Winter"
+        spr = "spr", "Spring"
+        sum = "sum", "Summer"
+        aut = "aut", "Autumn"
+        ann = "ann", "Annual"
+
+    season = models.CharField(
+        max_length=3,
+        choices=Season.choices,
+        help_text="Season for the climate data",
+    )
+    data = models.FloatField(null=True, blank=True)
+    record = models.ForeignKey(
+        to=ClimateRecord,
+        on_delete=models.CASCADE,
+        related_name="season_data",
+    )
+
+    def __str__(self):
+        return f"{self.get_season_display()} - {self.record.year} - {self.data}"
