@@ -38,6 +38,7 @@ class ClimateRegion(models.Model):
 
     region = models.CharField(
         max_length=50,
+        unique=True,
         choices=Region.choices,
         help_text="Select the geographical region.",
     )
