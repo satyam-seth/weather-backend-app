@@ -61,3 +61,16 @@ class ClimateRegionModelTest(TestCase):
         record = ClimateRegion.objects.create(region=ClimateRegion.Region.UK)
         # Test that the object is created successfully
         self.assertEqual(ClimateRegion.Region.UK, record.region)
+
+
+class ClimateParameterModelTest(TestCase):
+    """Climate Parameter Model Test"""
+
+    def test_model_fields(self):
+        """Test the fields of the ClimateParameter model."""
+
+        record = ClimateParameter.objects.create(
+            parameter=ClimateParameter.Parameter.RAINFALL
+        )
+        # Test that the object is created successfully
+        self.assertEqual(ClimateParameter.Parameter.RAINFALL, record.parameter)
