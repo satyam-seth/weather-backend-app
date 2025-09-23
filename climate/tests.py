@@ -51,6 +51,13 @@ class ClimateRecordModelTest(TestCase):
                 year=2023,
             )
 
+    def test_str_representation(self):
+        """Test the string representation of the ClimateRecord model."""
+
+        record = self.climate_record
+        expected_str = "Rainfall - UK - 2023"
+        self.assertEqual(str(record), expected_str)
+
 
 class ClimateRegionModelTest(TestCase):
     """Climate Region Model Test"""
@@ -61,6 +68,13 @@ class ClimateRegionModelTest(TestCase):
         record = ClimateRegion.objects.create(region=ClimateRegion.Region.UK)
         # Test that the object is created successfully
         self.assertEqual(ClimateRegion.Region.UK, record.region)
+
+    def test_str_representation(self):
+        """Test the string representation of the ClimateRegion model."""
+
+        record = ClimateRegion.objects.create(region=ClimateRegion.Region.UK)
+        expected_str = "UK"
+        self.assertEqual(str(record), expected_str)
 
 
 class ClimateParameterModelTest(TestCase):
@@ -74,3 +88,12 @@ class ClimateParameterModelTest(TestCase):
         )
         # Test that the object is created successfully
         self.assertEqual(ClimateParameter.Parameter.RAINFALL, record.parameter)
+
+    def test_str_representation(self):
+        """Test the string representation of the ClimateParameter model."""
+
+        record = ClimateParameter.objects.create(
+            parameter=ClimateParameter.Parameter.RAINFALL
+        )
+        expected_str = "Rainfall"
+        self.assertEqual(str(record), expected_str)

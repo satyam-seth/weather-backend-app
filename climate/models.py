@@ -104,7 +104,7 @@ class ClimateRecord(models.Model):
     updated_on = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.get_parameter_display()} - {self.region.get_region_display()} - {self.year}"
+        return f"{self.parameter.get_parameter_display()} - {self.region.get_region_display()} - {self.year}"
 
 
 class ClimateMonthly(models.Model):
