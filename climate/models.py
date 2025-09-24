@@ -72,6 +72,7 @@ class ClimateParameter(models.Model):
         max_length=20,
         choices=Parameter.choices,
         help_text="The type of climate parameter.",
+        unique=True,
     )
 
     def __str__(self) -> str:
