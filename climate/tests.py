@@ -2,7 +2,7 @@ from django.db import IntegrityError
 from django.test import TestCase
 from django.utils import timezone
 
-from .models import ClimateParameter, ClimateRecord, ClimateRegion
+from .models import ClimateMonthly, ClimateParameter, ClimateRecord, ClimateRegion
 
 
 class ClimateRecordModelTest(TestCase):
@@ -97,3 +97,34 @@ class ClimateParameterModelTest(TestCase):
         )
         expected_str = "Rainfall"
         self.assertEqual(str(record), expected_str)
+
+
+class ClimateMonthlyModelTest(TestCase):
+    """Climate Monthly Model Test"""
+
+    def setUp(self):
+        self.region = ClimateRegion.objects.create(region=ClimateRegion.Region.UK)
+        self.parameter = ClimateParameter.objects.create(
+            parameter=ClimateParameter.Parameter.RAINFALL
+        )
+        self.record = ClimateRecord.objects.create(
+            region=self.region,
+            parameter=self.parameter,
+            year=2023,
+        )
+
+    def test_create_valid_climate_monthly(self):
+        """Test creating a valid ClimateMonthly instance."""
+
+        monthly = ClimateMonthly.objects.create(record=self.record, month=1, data=25.3)
+        self.assertEqual(monthly.month, 1)
+        self.assertEqual(monthly.data, 25.3)
+        self.assertEqual(monthly.record, self.record)
+
+    def test_get_month_display(self):
+        """Test the get_month_display method."""
+
+        monthly = ClimateMonthly.objects.create(record=self.record, month=3, data=12.3)
+
+        expected_str = "Rainfall - 2023 - March"
+        self.assertEqual(str(monthly), expected_str)
