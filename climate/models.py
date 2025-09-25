@@ -124,7 +124,7 @@ class ClimateMonthly(models.Model):
         verbose_name = "Climate Monthly"
         verbose_name_plural = "Climate Monthlies"
 
-    class Month(models.TextChoices):  # pylint: disable=too-many-ancestors
+    class Month(models.IntegerChoices):  # pylint: disable=too-many-ancestors
         """Month Choices"""
 
         JAN = 1, "January"
@@ -153,7 +153,7 @@ class ClimateMonthly(models.Model):
     )
 
     def __str__(self):
-        return f"{self.record.get_parameter_display()} - {self.record.year} - {self.get_month_display()}"
+        return f"{self.record.parameter.get_parameter_display()} - {self.record.year} - {self.get_month_display()}"
 
 
 class ClimateSeason(models.Model):
