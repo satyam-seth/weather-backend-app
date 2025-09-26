@@ -2,7 +2,13 @@ from django.db import IntegrityError
 from django.test import TestCase
 from django.utils import timezone
 
-from .models import ClimateMonthly, ClimateParameter, ClimateRecord, ClimateRegion
+from .models import (
+    ClimateMonthly,
+    ClimateParameter,
+    ClimateRecord,
+    ClimateRegion,
+    ClimateSeason,
+)
 
 
 class ClimateRecordModelTest(TestCase):
@@ -128,3 +134,41 @@ class ClimateMonthlyModelTest(TestCase):
 
         expected_str = "Rainfall - 2023 - March"
         self.assertEqual(str(monthly), expected_str)
+
+
+class ClimateSeasonModelTest(TestCase):
+    """Climate Season Model Test"""
+
+    def setUp(self):
+        self.region = ClimateRegion.objects.create(region=ClimateRegion.Region.UK)
+        self.parameter = ClimateParameter.objects.create(
+            parameter=ClimateParameter.Parameter.RAINFALL,
+        )
+        self.record = ClimateRecord.objects.create(
+            region=self.region,
+            parameter=self.parameter,
+            year=2020,
+        )
+
+    def test_create_climate_season(self):
+        """Test creating a valid ClimateSeason instance."""
+
+        season = ClimateSeason.objects.create(
+            season=ClimateSeason.Season.win,
+            data=12.5,
+            record=self.record,
+        )
+        self.assertEqual(season.season, "win")
+        self.assertEqual(season.data, 12.5)
+        self.assertEqual(season.record, self.record)
+
+    def test_str_representation(self):
+        """Test the string representation of the ClimateSeason model."""
+
+        season = ClimateSeason.objects.create(
+            season=ClimateSeason.Season.spr,
+            data=15.0,
+            record=self.record,
+        )
+        expected_str = "Spring - 2020 - 15.0"
+        self.assertEqual(str(season), expected_str)
