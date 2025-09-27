@@ -99,7 +99,11 @@ class ClimateRecord(models.Model):
     region = models.ForeignKey(to=ClimateRegion, on_delete=models.CASCADE)
     parameter = models.ForeignKey(to=ClimateParameter, on_delete=models.CASCADE)
     year = models.PositiveIntegerField(
-        help_text="The year this climate data refers to."
+        help_text="The year this climate data refers to.",
+        validators=[
+            MinValueValidator(1900),
+            MaxValueValidator(2100),
+        ],
     )
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
