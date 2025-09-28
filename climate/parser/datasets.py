@@ -27,3 +27,26 @@ REGIONS = [
     "England_SW_and_S_Wales",
     "England_SE_and_Central_S",
 ]
+
+MONTH_FIELDS = [
+    "jan",
+    "feb",
+    "mar",
+    "apr",
+    "may",
+    "jun",
+    "jul",
+    "aug",
+    "sep",
+    "oct",
+    "nov",
+    "dec",
+]
+
+SEASON_FIELDS = [
+    "win",
+    "spr",
+    "sum",
+    "aut",
+    "ann",
+]
