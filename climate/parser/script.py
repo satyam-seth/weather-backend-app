@@ -1,32 +1,20 @@
 import re
 
 import requests
+from django.db import transaction
 
-from climate.models import ClimateRecord
-
-FIELDS = [
-    "jan",
-    "feb",
-    "mar",
-    "apr",
-    "may",
-    "jun",
-    "jul",
-    "aug",
-    "sep",
-    "oct",
-    "nov",
-    "dec",
-    "win",
-    "spr",
-    "sum",
-    "aut",
-    "ann",
-]
+from climate.models import (
+    ClimateMonthly,
+    ClimateParameter,
+    ClimateRecord,
+    ClimateRegion,
+    ClimateSeason,
+)
+from climate.parser.datasets import MONTH_FIELDS, SEASON_FIELDS
 
 
 def fetch_and_process_climate_data(url: str, region: str, dataset: str) -> None:
-    """Parse data from the Met Office and update/create ClimateRecord entries."""
+    """Parse data from the Met Office and update/create Database entries."""
 
     try:
         response = requests.get(url, timeout=10)
@@ -35,27 +23,45 @@ def fetch_and_process_climate_data(url: str, region: str, dataset: str) -> None:
         print(f"Error fetching data from {url}: {e}")
         return
 
-    # Split the response text into lines and keep those starting with a year
     lines = response.text.splitlines()
     data_lines = [line.strip() for line in lines if re.match(r"^\d{4}", line.strip())]
 
+    # Ensure region and parameter exist
+    region_obj, _ = ClimateRegion.objects.get_or_create(region=region)
+    parameter_obj, _ = ClimateParameter.objects.get_or_create(parameter=dataset)
+
     for line in data_lines:
         try:
-            # Split the line and extract the year and monthly/seasonal values
             parts = line.split()
             year = int(parts[0])
-            values = [
-                None if v == "---" else float(v) if v != "---" else None
-                for v in parts[1:]
-            ]
+            values = [None if v == "---" else float(v) for v in parts[1:]]
 
-            # Create or update the record in the database
-            ClimateRecord.objects.update_or_create(
-                dataset=dataset,
-                region=region,
-                year=year,
-                defaults=dict(zip(FIELDS, values)),
-            )
-        except ValueError as e:
+            month_values = dict(zip(MONTH_FIELDS, values[:12]))
+            season_values = dict(zip(SEASON_FIELDS, values[12:]))
+
+            with transaction.atomic():
+                record, _ = ClimateRecord.objects.get_or_create(
+                    region=region_obj,
+                    parameter=parameter_obj,
+                    year=year,
+                )
+
+                # Upsert monthly data
+                for idx, (month, val) in enumerate(month_values.items(), start=1):
+                    ClimateMonthly.objects.update_or_create(
+                        record=record,
+                        month=idx,
+                        defaults={"data": val},
+                    )
+
+                # Upsert seasonal data
+                for season, val in season_values.items():
+                    ClimateSeason.objects.update_or_create(
+                        record=record,
+                        season=season,  # "win", "spr", ...
+                        defaults={"data": val},
+                    )
+
+        except Exception as e:
             print(f"Error processing line '{line}': {e}")
             continue
