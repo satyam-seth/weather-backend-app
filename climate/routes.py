@@ -4,4 +4,9 @@ from climate import viewsets
 
 climate_router = DefaultRouter()
 climate_router.register("regions", viewsets.ClimateRegionViewSet, basename="regions")
+climate_router.register(
+    "parameters",
+    viewsets.ClimateParameterViewSet,
+    basename="parameters",
+)
 climate_router.register("climate", viewsets.ClimateRecordViewSet, basename="climate")

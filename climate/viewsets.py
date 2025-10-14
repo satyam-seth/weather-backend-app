@@ -1,8 +1,12 @@
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
 from climate.filters import ClimateRecordFilter
-from climate.models import ClimateRecord, ClimateRegion
-from climate.serializers import ClimateRecordSerializer, ClimateRegionSerializer
+from climate.models import ClimateParameter, ClimateRecord, ClimateRegion
+from climate.serializers import (
+    ClimateParameterSerializer,
+    ClimateRecordSerializer,
+    ClimateRegionSerializer,
+)
 
 
 class ClimateRegionViewSet(ReadOnlyModelViewSet):
@@ -10,6 +14,13 @@ class ClimateRegionViewSet(ReadOnlyModelViewSet):
 
     queryset = ClimateRegion.objects.all()
     serializer_class = ClimateRegionSerializer
+
+
+class ClimateParameterViewSet(ReadOnlyModelViewSet):
+    """Climate Parameter ViewSet"""
+
+    queryset = ClimateParameter.objects.all()
+    serializer_class = ClimateParameterSerializer
 
 
 class ClimateRecordViewSet(ReadOnlyModelViewSet):  # pylint: disable=too-many-ancestors
