@@ -160,7 +160,7 @@ class ClimateMonthly(models.Model):
         return f"{self.record.parameter.get_parameter_display()} - {self.record.year} - {self.get_month_display()}"
 
 
-class ClimateSeason(models.Model):
+class ClimateSeasonal(models.Model):
     """Climate Seasonal Data"""
 
     class Meta:
@@ -194,7 +194,7 @@ class ClimateSeason(models.Model):
     record = models.ForeignKey(
         to=ClimateRecord,
         on_delete=models.CASCADE,
-        related_name="season_data",
+        related_name="seasonal_data",
     )
 
     def __str__(self):

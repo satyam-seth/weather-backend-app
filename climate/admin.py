@@ -5,7 +5,7 @@ from .models import (
     ClimateParameter,
     ClimateRecord,
     ClimateRegion,
-    ClimateSeason,
+    ClimateSeasonal,
 )
 
 
@@ -40,8 +40,8 @@ class ClimateMonthlyAdmin(admin.ModelAdmin):
     ordering = ("record__year", "month")
 
 
-@admin.register(ClimateSeason)
-class ClimateSeasonAdmin(admin.ModelAdmin):
+@admin.register(ClimateSeasonal)
+class ClimateSeasonalAdmin(admin.ModelAdmin):
     """Climate Seasonal Model Admin"""
 
     list_display = ("id", "season", "data", "record")
