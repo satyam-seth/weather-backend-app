@@ -9,4 +9,9 @@ climate_router.register(
     viewsets.ClimateParameterViewSet,
     basename="parameters",
 )
+climate_router.register(
+    "monthly",
+    viewsets.ClimateMonthlyViewSet,
+    basename="monthly",
+)
 climate_router.register("climate", viewsets.ClimateRecordViewSet, basename="climate")
