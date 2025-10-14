@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import ClimateParameter, ClimateRecord, ClimateRegion
+from .models import ClimateMonthly, ClimateParameter, ClimateRecord, ClimateRegion
 
 
 class ClimateRegionSerializer(serializers.ModelSerializer):
@@ -16,6 +16,14 @@ class ClimateParameterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ClimateParameter
+        fields = "__all__"
+
+
+class ClimateMonthlySerializer(serializers.ModelSerializer):
+    """Climate Monthly Serializer"""
+
+    class Meta:
+        model = ClimateMonthly
         fields = "__all__"
 
 
