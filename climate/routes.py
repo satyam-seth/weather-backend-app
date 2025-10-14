@@ -21,7 +21,7 @@ climate_router.register(
 climate_router.register(
     "seasonal",
     viewsets.ClimateMonthlyViewSet,
-    basename="serasonal",
+    basename="seasonal",
 )
 climate_router.register(
     "climate",
