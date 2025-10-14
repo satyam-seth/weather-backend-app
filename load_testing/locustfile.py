@@ -6,6 +6,8 @@ class APITestUser(HttpUser):
 
     @task
     def test_list_api(self):
+        """Test the list of API endpoints."""
+
         self.client.get("/api/parameters/")
         self.client.get("/api/regions/")
         self.client.get("/api/monthly/")
