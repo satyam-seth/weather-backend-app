@@ -6,12 +6,14 @@ from climate.models import (
     ClimateParameter,
     ClimateRecord,
     ClimateRegion,
+    ClimateSeason,
 )
 from climate.serializers import (
     ClimateMonthlySerializer,
     ClimateParameterSerializer,
     ClimateRecordSerializer,
     ClimateRegionSerializer,
+    ClimateSeasonalSerializer,
 )
 
 
@@ -34,6 +36,13 @@ class ClimateMonthlyViewSet(ReadOnlyModelViewSet):
 
     queryset = ClimateMonthly.objects.all()
     serializer_class = ClimateMonthlySerializer
+
+
+class ClimateSeasonalViewSet(ReadOnlyModelViewSet):
+    """Climate Seasonal ViewSet"""
+
+    queryset = ClimateSeason.objects.all()
+    serializer_class = ClimateSeasonalSerializer
 
 
 class ClimateRecordViewSet(ReadOnlyModelViewSet):  # pylint: disable=too-many-ancestors
