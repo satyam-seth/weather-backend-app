@@ -5,7 +5,7 @@ from .models import (
     ClimateParameter,
     ClimateRecord,
     ClimateRegion,
-    ClimateSeason,
+    ClimateSeasonal,
 )
 
 
@@ -37,7 +37,7 @@ class ClimateSeasonalSerializer(serializers.ModelSerializer):
     """Climate Seasonal Serializer"""
 
     class Meta:
-        model = ClimateSeason
+        model = ClimateSeasonal
         fields = "__all__"
 
 

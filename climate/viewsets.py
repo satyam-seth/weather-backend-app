@@ -6,7 +6,7 @@ from climate.models import (
     ClimateParameter,
     ClimateRecord,
     ClimateRegion,
-    ClimateSeason,
+    ClimateSeasonal,
 )
 from climate.serializers import (
     ClimateMonthlySerializer,
@@ -41,7 +41,7 @@ class ClimateMonthlyViewSet(ReadOnlyModelViewSet):
 class ClimateSeasonalViewSet(ReadOnlyModelViewSet):
     """Climate Seasonal ViewSet"""
 
-    queryset = ClimateSeason.objects.all()
+    queryset = ClimateSeasonal.objects.all()
     serializer_class = ClimateSeasonalSerializer
 
 

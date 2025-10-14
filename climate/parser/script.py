@@ -8,7 +8,7 @@ from climate.models import (
     ClimateParameter,
     ClimateRecord,
     ClimateRegion,
-    ClimateSeason,
+    ClimateSeasonal,
 )
 from climate.parser.datasets import MONTH_FIELDS, SEASON_FIELDS
 
@@ -56,7 +56,7 @@ def fetch_and_process_climate_data(url: str, region: str, dataset: str) -> None:
 
                 # Upsert seasonal data
                 for season, val in season_values.items():
-                    ClimateSeason.objects.update_or_create(
+                    ClimateSeasonal.objects.update_or_create(
                         record=record,
                         season=season,  # "win", "spr", ...
                         defaults={"data": val},

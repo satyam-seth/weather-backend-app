@@ -7,7 +7,7 @@ from .models import (
     ClimateParameter,
     ClimateRecord,
     ClimateRegion,
-    ClimateSeason,
+    ClimateSeasonal,
 )
 
 
@@ -136,8 +136,8 @@ class ClimateMonthlyModelTest(TestCase):
         self.assertEqual(str(monthly), expected_str)
 
 
-class ClimateSeasonModelTest(TestCase):
-    """Climate Season Model Test"""
+class ClimateSeasonalModelTest(TestCase):
+    """Climate Seasonal Model Test"""
 
     def setUp(self):
         self.region = ClimateRegion.objects.create(region=ClimateRegion.Region.UK)
@@ -150,11 +150,11 @@ class ClimateSeasonModelTest(TestCase):
             year=2020,
         )
 
-    def test_create_climate_season(self):
-        """Test creating a valid ClimateSeason instance."""
+    def test_create_climate_seasonal(self):
+        """Test creating a valid ClimateSeasonal instance."""
 
-        season = ClimateSeason.objects.create(
-            season=ClimateSeason.Season.win,
+        season = ClimateSeasonal.objects.create(
+            season=ClimateSeasonal.Season.win,
             data=12.5,
             record=self.record,
         )
@@ -163,10 +163,10 @@ class ClimateSeasonModelTest(TestCase):
         self.assertEqual(season.record, self.record)
 
     def test_str_representation(self):
-        """Test the string representation of the ClimateSeason model."""
+        """Test the string representation of the ClimateSeasonal model."""
 
-        season = ClimateSeason.objects.create(
-            season=ClimateSeason.Season.spr,
+        season = ClimateSeasonal.objects.create(
+            season=ClimateSeasonal.Season.spr,
             data=15.0,
             record=self.record,
         )
