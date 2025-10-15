@@ -3,7 +3,7 @@ from unittest.mock import patch
 
 from django.test import TestCase
 
-from climate.models import ClimateRegion
+from climate.models import ClimateParameter, ClimateRegion
 
 
 class InvalidateClimateRegionCacheTestCase(TestCase):
@@ -44,3 +44,47 @@ class InvalidateClimateRegionCacheTestCase(TestCase):
 
         # Ensure cache.delete_pattern was called
         mock_cache_delete.assert_called_with("*climate_region*")
+
+
+class InvalidateClimateParameterCacheTestCase(TestCase):
+    """Test case for ClimateParameter model cache invalidation."""
+
+    @patch("django.core.cache.cache.delete_pattern")
+    def test_climate_parameter_create(self, mock_cache_delete):
+        """Test that creating a ClimateParameter invalidates the cache."""
+
+        # Create a new ClimateParameter
+        ClimateParameter.objects.create(parameter=ClimateParameter.Parameter.RAINFALL)
+
+        # Ensure cache.delete_pattern was called with the correct pattern
+        mock_cache_delete.assert_called_with("*climate_parameter*")
+
+    @patch("django.core.cache.cache.delete_pattern")
+    def test_climate_parameter_update(self, mock_cache_delete):
+        """Test that updating a ClimateParameter invalidates the cache."""
+
+        # Create a new ClimateParameter
+        param = ClimateParameter.objects.create(
+            parameter=ClimateParameter.Parameter.RAINFALL
+        )
+
+        # save to trigger update
+        param.save()
+
+        # Ensure cache.delete_pattern was called with the correct pattern
+        mock_cache_delete.assert_called_with("*climate_parameter*")
+
+    @patch("django.core.cache.cache.delete_pattern")
+    def test_climate_parameter_delete(self, mock_cache_delete):
+        """Test that deleting a ClimateParameter invalidates the cache."""
+
+        # Create a new ClimateParameter
+        param = ClimateParameter.objects.create(
+            parameter=ClimateParameter.Parameter.RAINFALL
+        )
+
+        # Delete the ClimateParameter
+        param.delete()
+
+        # Ensure cache.delete_pattern was called with the correct pattern
+        mock_cache_delete.assert_called_with("*climate_parameter*")
