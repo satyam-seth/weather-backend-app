@@ -101,7 +101,7 @@ class ClimateRecord(models.Model):
     year = models.PositiveIntegerField(
         help_text="The year this climate data refers to.",
         validators=[
-            MinValueValidator(1900),
+            MinValueValidator(1600),
             MaxValueValidator(2100),
         ],
     )
@@ -173,8 +173,8 @@ class ClimateSeasonal(models.Model):
                 name="unique_season_record",
             )
         ]
-        verbose_name = "Climate Season"
-        verbose_name_plural = "Climate Seasons"
+        verbose_name = "Climate Seasonal"
+        verbose_name_plural = "Climate Seasonals"
 
     class Season(models.TextChoices):
         """Season Choices"""
