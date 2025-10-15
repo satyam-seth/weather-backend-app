@@ -12,55 +12,55 @@ from climate.models import (
 
 
 @receiver([post_save, post_delete], sender=ClimateRegion)
-def invalidate_climateregion_cache(sender, instance, **kwargs):
+def invalidate_climate_region_cache(sender, instance, **kwargs):
     """
-    Invalidate climateregion list caches when a climateregion is created, updated, or deleted
+    Invalidate climate_region list caches when a climate_region is created, updated, or deleted
     """
     print("Clearing climateregion cache")
 
-    # Clear climateregion list caches
-    cache.delete_pattern("*climateregion*")
+    # Clear climate_region list caches
+    cache.delete_pattern("*climate_region*")
 
 
 @receiver([post_save, post_delete], sender=ClimateParameter)
-def invalidate_climateparameter_cache(sender, instance, **kwargs):
+def invalidate_climate_parameter_cache(sender, instance, **kwargs):
     """
-    Invalidate climateparameter list caches when a climateparameter is created, updated, or deleted
+    Invalidate climate_parameter list caches when a climate_parameter is created, updated, or deleted
     """
-    print("Clearing climateparameter cache")
+    print("Clearing climate_parameter cache")
 
-    # Clear climateparameter list caches
-    cache.delete_pattern("*climateparameter*")
+    # Clear climate_parameter list caches
+    cache.delete_pattern("*climate_parameter*")
 
 
 @receiver([post_save, post_delete], sender=ClimateSeasonal)
-def invalidate_climateseasonal_cache(sender, instance, **kwargs):
+def invalidate_climate_seasonal_cache(sender, instance, **kwargs):
     """
-    Invalidate climateseasonal list caches when a climateseasonal is created, updated, or deleted
+    Invalidate climate_seasonal list caches when a climate_seasonal is created, updated, or deleted
     """
-    print("Clearing climateseasonal cache")
+    print("Clearing climate_seasonal cache")
 
-    # Clear climateseasonal list caches
-    cache.delete_pattern("*climateseasonal*")
+    # Clear climate_seasonal list caches
+    cache.delete_pattern("*climate_seasonal*")
 
 
 @receiver([post_save, post_delete], sender=ClimateRecord)
 def invalidate_climaterecord_cache(sender, instance, **kwargs):
     """
-    Invalidate climaterecord list caches when a climaterecord is created, updated, or deleted
+    Invalidate climate_record list caches when a climate_record is created, updated, or deleted
     """
-    print("Clearing climaterecord cache")
+    print("Clearing climate_record cache")
 
-    # Clear climaterecord list caches
-    cache.delete_pattern("*climaterecord*")
+    # Clear climate_record list caches
+    cache.delete_pattern("*climate_record*")
 
 
 @receiver([post_save, post_delete], sender=ClimateMonthly)
-def invalidate_climatemonthly_cache(sender, instance, **kwargs):
+def invalidate_climate_monthly_cache(sender, instance, **kwargs):
     """
-    Invalidate climatemonthly list caches when a climatemonthly is created, updated, or deleted
+    Invalidate climate_monthly list caches when a climate_monthly is created, updated, or deleted
     """
-    print("Clearing climatemonthly cache")
+    print("Clearing climate_monthly cache")
 
-    # Clear climatemonthly list caches
-    cache.delete_pattern("*climatemonthly*")
+    # Clear climate_monthly list caches
+    cache.delete_pattern("*climate_monthly*")

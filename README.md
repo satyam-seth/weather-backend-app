@@ -212,6 +212,12 @@ docker-compose -f docker-compose.dev.yml logs -f backend
 docker-compose -f docker-compose.dev.yml restart backend
 ```
 
+7. Open redis-cli inside redis service container
+
+```sh
+docker-compose -f docker-compose.dev.yml exec redis redis-cli -n 1
+
 ## Related Project
 
 🔗 Web App: [Weather Frontend Repository](https://github.com/satyam-seth/weather-web-app)
+```
