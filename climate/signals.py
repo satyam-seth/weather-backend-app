@@ -16,7 +16,7 @@ def invalidate_climate_region_cache(sender, instance, **kwargs):
     """
     Invalidate climate_region list caches when a climate_region is created, updated, or deleted
     """
-    print("Clearing climateregion cache")
+    # print("Clearing climate_region cache")
 
     # Clear climate_region list caches
     cache.delete_pattern("*climate_region*")
@@ -27,7 +27,7 @@ def invalidate_climate_parameter_cache(sender, instance, **kwargs):
     """
     Invalidate climate_parameter list caches when a climate_parameter is created, updated, or deleted
     """
-    print("Clearing climate_parameter cache")
+    # print("Clearing climate_parameter cache")
 
     # Clear climate_parameter list caches
     cache.delete_pattern("*climate_parameter*")
@@ -38,18 +38,18 @@ def invalidate_climate_seasonal_cache(sender, instance, **kwargs):
     """
     Invalidate climate_seasonal list caches when a climate_seasonal is created, updated, or deleted
     """
-    print("Clearing climate_seasonal cache")
+    # print("Clearing climate_seasonal cache")
 
     # Clear climate_seasonal list caches
     cache.delete_pattern("*climate_seasonal*")
 
 
 @receiver([post_save, post_delete], sender=ClimateRecord)
-def invalidate_climaterecord_cache(sender, instance, **kwargs):
+def invalidate_climate_record_cache(sender, instance, **kwargs):
     """
     Invalidate climate_record list caches when a climate_record is created, updated, or deleted
     """
-    print("Clearing climate_record cache")
+    # print("Clearing climate_record cache")
 
     # Clear climate_record list caches
     cache.delete_pattern("*climate_record*")
@@ -60,7 +60,7 @@ def invalidate_climate_monthly_cache(sender, instance, **kwargs):
     """
     Invalidate climate_monthly list caches when a climate_monthly is created, updated, or deleted
     """
-    print("Clearing climate_monthly cache")
+    # print("Clearing climate_monthly cache")
 
     # Clear climate_monthly list caches
     cache.delete_pattern("*climate_monthly*")
