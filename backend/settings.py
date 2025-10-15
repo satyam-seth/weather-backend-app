@@ -160,3 +160,10 @@ CACHES = {
 
 # Cache time-to-live is 15 minutes
 CACHE_TTL = 60 * 15
+
+
+# DEBUG TOOLBAR
+if DEBUG:
+    INTERNAL_IPS = ["127.0.0.1", "localhost"]
+    INSTALLED_APPS.append("debug_toolbar")
+    MIDDLEWARE.append("debug_toolbar.middleware.DebugToolbarMiddleware")
