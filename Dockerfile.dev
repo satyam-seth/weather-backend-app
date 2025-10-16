@@ -7,6 +7,6 @@ WORKDIR /weather-backend-app
 
 COPY requirements.txt /weather-backend-app/
 
-RUN pip install -U pip && pip install -r requirements.txt
+RUN pip install -U pip && pip install uv
 
 COPY . /weather-backend-app/
