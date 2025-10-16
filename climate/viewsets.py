@@ -161,11 +161,7 @@ class ClimateRecordViewSet(ReadOnlyModelViewSet):  # pylint: disable=too-many-an
     """Climate Record ViewSet"""
 
     # queryset = ClimateRecord.objects.all()
-    queryset = (
-        ClimateRecord.objects.select_related("region", "parameter")
-        .all()
-        .order_by("year")
-    )
+    queryset = ClimateRecord.objects.select_related("region", "parameter").all()
     serializer_class = ClimateRecordSerializer
     filterset_class = ClimateRecordFilter
 

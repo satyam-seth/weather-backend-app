@@ -58,6 +58,7 @@ class ClimateRecord(models.Model):
     updated_on = models.DateTimeField(auto_now=True)
 
     class Meta:
+        ordering = ["-year"]
         unique_together = ["parameter", "region", "year"]
         indexes = [
             models.Index(fields=["region"]),
