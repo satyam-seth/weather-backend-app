@@ -160,3 +160,26 @@ CACHES = {
 
 # Cache time-to-live is 15 minutes
 CACHE_TTL = 60 * 15
+
+
+# Django extensions
+if DEBUG:
+    INSTALLED_APPS.append("django_extensions")
+
+    LOGGING = {
+        "version": 1,
+        "disable_existing_loggers": False,
+        "handlers": {
+            "console": {
+                "level": "DEBUG",
+                "class": "logging.StreamHandler",
+            },
+        },
+        "loggers": {
+            "django.db.backends": {
+                "level": "DEBUG",
+                "handlers": ["console"],
+            },
+        },
+    }
+    SHELL_PLUS_PRINT_SQL = True
