@@ -1,0 +1,7 @@
+[project]
+name = "weather-backend-app"
+version = "0.1.0"
+description = "A DRF based backend for accessing climate datasets from the UK MetOffice."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
