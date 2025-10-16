@@ -160,12 +160,12 @@ class ClimateSeasonalViewSet(ReadOnlyModelViewSet):
 class ClimateRecordViewSet(ReadOnlyModelViewSet):  # pylint: disable=too-many-ancestors
     """Climate Record ViewSet"""
 
+    # queryset = ClimateRecord.objects.all()
     queryset = (
         ClimateRecord.objects.select_related("region", "parameter")
         .all()
         .order_by("year")
     )
-
     serializer_class = ClimateRecordSerializer
     filterset_class = ClimateRecordFilter
 

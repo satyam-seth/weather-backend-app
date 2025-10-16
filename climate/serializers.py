@@ -44,6 +44,9 @@ class ClimateSeasonalSerializer(serializers.ModelSerializer):
 class ClimateRecordSerializer(serializers.ModelSerializer):
     """Climate Record Serializer"""
 
+    region = ClimateRegionSerializer()
+    parameter = ClimateParameterSerializer()
+
     class Meta:
         model = ClimateRecord
         fields = "__all__"
