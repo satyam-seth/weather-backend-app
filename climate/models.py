@@ -40,8 +40,6 @@ class ClimateRegion(models.Model):
         indexes = [
             models.Index(fields=["region"]),
         ]
-        verbose_name = "Climate Region"
-        verbose_name_plural = "Climate Regions"
 
     def __str__(self) -> str:
         return self.get_region_display()
@@ -72,8 +70,6 @@ class ClimateParameter(models.Model):
         indexes = [
             models.Index(fields=["parameter"]),
         ]
-        verbose_name = "Climate Parameter"
-        verbose_name_plural = "Climate Parameters"
 
     def __str__(self) -> str:
         return self.get_parameter_display()
@@ -105,8 +101,6 @@ class ClimateRecord(models.Model):
             models.Index(fields=["region"]),
             models.Index(fields=["parameter"]),
         ]
-        verbose_name = "Climate Record"
-        verbose_name_plural = "Climate Records"
 
     def __str__(self):
         return f"{self.parameter.get_parameter_display()} - {self.region.get_region_display()} - {self.year}"
@@ -153,8 +147,6 @@ class ClimateMonthly(models.Model):
                 name="unique_record_month",
             )
         ]
-        verbose_name = "Climate Monthly"
-        verbose_name_plural = "Climate Monthlies"
 
     def __str__(self):
         return f"{self.record.parameter.get_parameter_display()} - {self.record.year} - {self.get_month_display()}"
@@ -194,8 +186,6 @@ class ClimateSeasonal(models.Model):
                 name="unique_season_record",
             )
         ]
-        verbose_name = "Climate Seasonal"
-        verbose_name_plural = "Climate Seasonals"
 
     def __str__(self):
         return f"{self.get_season_display()} - {self.record.year} - {self.data}"
