@@ -91,12 +91,7 @@ class ClimateRecord(models.Model):
     updated_on = models.DateTimeField(auto_now=True)
 
     class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=["parameter", "region", "year"],
-                name="unique_parameter_region_year",
-            )
-        ]
+        unique_together = ["parameter", "region", "year"]
         indexes = [
             models.Index(fields=["region"]),
             models.Index(fields=["parameter"]),
@@ -141,12 +136,7 @@ class ClimateMonthly(models.Model):
         indexes = [
             models.Index(fields=["record", "month"]),
         ]
-        constraints = [
-            models.UniqueConstraint(
-                fields=["record", "month"],
-                name="unique_record_month",
-            )
-        ]
+        unique_together = ["record", "month"]
 
     def __str__(self):
         return f"{self.record.parameter.get_parameter_display()} - {self.record.year} - {self.get_month_display()}"
@@ -180,12 +170,7 @@ class ClimateSeasonal(models.Model):
         indexes = [
             models.Index(fields=["record", "season"]),
         ]
-        constraints = [
-            models.UniqueConstraint(
-                fields=["season", "record"],
-                name="unique_season_record",
-            )
-        ]
+        unique_together = ["season", "record"]
 
     def __str__(self):
         return f"{self.get_season_display()} - {self.record.year} - {self.data}"
