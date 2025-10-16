@@ -5,13 +5,6 @@ from django.db import models
 class ClimateRegion(models.Model):
     """Climate Region"""
 
-    class Meta:
-        indexes = [
-            models.Index(fields=["region"]),
-        ]
-        verbose_name = "Climate Region"
-        verbose_name_plural = "Climate Regions"
-
     class Region(models.TextChoices):  # pylint: disable=too-many-ancestors
         """Region Choices"""
 
@@ -43,19 +36,19 @@ class ClimateRegion(models.Model):
         help_text="Select the geographical region.",
     )
 
+    class Meta:
+        indexes = [
+            models.Index(fields=["region"]),
+        ]
+        verbose_name = "Climate Region"
+        verbose_name_plural = "Climate Regions"
+
     def __str__(self) -> str:
         return self.get_region_display()
 
 
 class ClimateParameter(models.Model):
     """Climate Parameter"""
-
-    class Meta:
-        indexes = [
-            models.Index(fields=["parameter"]),
-        ]
-        verbose_name = "Climate Parameter"
-        verbose_name_plural = "Climate Parameters"
 
     class Parameter(models.TextChoices):  # pylint: disable=too-many-ancestors
         """Dataset Choices"""
@@ -75,12 +68,31 @@ class ClimateParameter(models.Model):
         unique=True,
     )
 
+    class Meta:
+        indexes = [
+            models.Index(fields=["parameter"]),
+        ]
+        verbose_name = "Climate Parameter"
+        verbose_name_plural = "Climate Parameters"
+
     def __str__(self) -> str:
         return self.get_parameter_display()
 
 
 class ClimateRecord(models.Model):
     """Climate Record"""
+
+    region = models.ForeignKey(to=ClimateRegion, on_delete=models.CASCADE)
+    parameter = models.ForeignKey(to=ClimateParameter, on_delete=models.CASCADE)
+    year = models.PositiveIntegerField(
+        help_text="The year this climate data refers to.",
+        validators=[
+            MinValueValidator(1600),
+            MaxValueValidator(2100),
+        ],
+    )
+    created_on = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(auto_now=True)
 
     class Meta:
         constraints = [
@@ -96,37 +108,12 @@ class ClimateRecord(models.Model):
         verbose_name = "Climate Record"
         verbose_name_plural = "Climate Records"
 
-    region = models.ForeignKey(to=ClimateRegion, on_delete=models.CASCADE)
-    parameter = models.ForeignKey(to=ClimateParameter, on_delete=models.CASCADE)
-    year = models.PositiveIntegerField(
-        help_text="The year this climate data refers to.",
-        validators=[
-            MinValueValidator(1600),
-            MaxValueValidator(2100),
-        ],
-    )
-    created_on = models.DateTimeField(auto_now_add=True)
-    updated_on = models.DateTimeField(auto_now=True)
-
     def __str__(self):
         return f"{self.parameter.get_parameter_display()} - {self.region.get_region_display()} - {self.year}"
 
 
 class ClimateMonthly(models.Model):
     """Climate Monthly Data"""
-
-    class Meta:
-        indexes = [
-            models.Index(fields=["record", "month"]),
-        ]
-        constraints = [
-            models.UniqueConstraint(
-                fields=["record", "month"],
-                name="unique_record_month",
-            )
-        ]
-        verbose_name = "Climate Monthly"
-        verbose_name_plural = "Climate Monthlies"
 
     class Month(models.IntegerChoices):  # pylint: disable=too-many-ancestors
         """Month Choices"""
@@ -156,25 +143,25 @@ class ClimateMonthly(models.Model):
         related_name="monthly_data",
     )
 
+    class Meta:
+        indexes = [
+            models.Index(fields=["record", "month"]),
+        ]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["record", "month"],
+                name="unique_record_month",
+            )
+        ]
+        verbose_name = "Climate Monthly"
+        verbose_name_plural = "Climate Monthlies"
+
     def __str__(self):
         return f"{self.record.parameter.get_parameter_display()} - {self.record.year} - {self.get_month_display()}"
 
 
 class ClimateSeasonal(models.Model):
     """Climate Seasonal Data"""
-
-    class Meta:
-        indexes = [
-            models.Index(fields=["record", "season"]),
-        ]
-        constraints = [
-            models.UniqueConstraint(
-                fields=["season", "record"],
-                name="unique_season_record",
-            )
-        ]
-        verbose_name = "Climate Seasonal"
-        verbose_name_plural = "Climate Seasonals"
 
     class Season(models.TextChoices):
         """Season Choices"""
@@ -196,6 +183,19 @@ class ClimateSeasonal(models.Model):
         on_delete=models.CASCADE,
         related_name="seasonal_data",
     )
+
+    class Meta:
+        indexes = [
+            models.Index(fields=["record", "season"]),
+        ]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["season", "record"],
+                name="unique_season_record",
+            )
+        ]
+        verbose_name = "Climate Seasonal"
+        verbose_name_plural = "Climate Seasonals"
 
     def __str__(self):
         return f"{self.get_season_display()} - {self.record.year} - {self.data}"
