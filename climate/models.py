@@ -80,7 +80,6 @@ class ClimateMonthly(models.Model):
     record = models.ForeignKey(
         to=ClimateRecord,
         on_delete=models.CASCADE,
-        related_name="monthly_data",
     )
 
     class Meta:
@@ -105,7 +104,6 @@ class ClimateSeasonal(models.Model):
     record = models.ForeignKey(
         to=ClimateRecord,
         on_delete=models.CASCADE,
-        related_name="seasonal_data",
     )
 
     class Meta:
