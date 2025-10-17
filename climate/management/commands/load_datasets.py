@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 
-from climate.parser import DATASETS, REGIONS, fetch_and_process_climate_data
+from climate.parsers import DATASETS, REGIONS, ClimateDataHandler
 
 
 class Command(BaseCommand):
@@ -16,7 +16,8 @@ class Command(BaseCommand):
                 url = f"https://www.metoffice.gov.uk/pub/data/weather/uk/climate/datasets/{param}/date/{region}.txt"
                 self.stdout.write(f"Fetching {region} - {dataset} from {url}...")
                 try:
-                    fetch_and_process_climate_data(url, region, dataset)
+                    handler = ClimateDataHandler(url, region, dataset)
+                    handler.fetch_parse_process()
                     self.stdout.write(
                         self.style.SUCCESS(f"Successfully loaded {dataset}.")
                     )
