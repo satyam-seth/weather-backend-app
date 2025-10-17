@@ -216,8 +216,20 @@ docker-compose -f docker-compose.dev.yml restart backend
 
 ```sh
 docker-compose -f docker-compose.dev.yml exec redis redis-cli -n 1
+```
+
+## Delete All Climate Data
+
+1. Login to admin panel as superuser
+
+2. Hit the endpoint below to delete all climate data
+
+```url
+http://127.0.0.1:8000/api/delete-all-climate-data/
+```
 
 ## Related Project
 
+```
 🔗 Web App: [Weather Frontend Repository](https://github.com/satyam-seth/weather-web-app)
 ```

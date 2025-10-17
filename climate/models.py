@@ -45,8 +45,8 @@ class ClimateParameter(models.Model):
 class ClimateRecord(models.Model):
     """Climate Record"""
 
-    region = models.ForeignKey(to=ClimateRegion, on_delete=models.CASCADE)
-    parameter = models.ForeignKey(to=ClimateParameter, on_delete=models.CASCADE)
+    region = models.ForeignKey(ClimateRegion, on_delete=models.CASCADE)
+    parameter = models.ForeignKey(ClimateParameter, on_delete=models.CASCADE)
     year = models.PositiveIntegerField(
         help_text="The year this climate data refers to.",
         validators=[
@@ -78,10 +78,7 @@ class ClimateMonthly(models.Model):
         help_text="The month of the data, from 1 (January) to 12 (December).",
     )
     data = models.FloatField(null=True, blank=True)
-    record = models.ForeignKey(
-        to=ClimateRecord,
-        on_delete=models.CASCADE,
-    )
+    record = models.ForeignKey(ClimateRecord, on_delete=models.CASCADE)
 
     class Meta:
         indexes = [
@@ -102,10 +99,7 @@ class ClimateSeasonal(models.Model):
         help_text="Season for the climate data",
     )
     data = models.FloatField(null=True, blank=True)
-    record = models.ForeignKey(
-        to=ClimateRecord,
-        on_delete=models.CASCADE,
-    )
+    record = models.ForeignKey(ClimateRecord, on_delete=models.CASCADE)
 
     class Meta:
         indexes = [

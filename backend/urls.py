@@ -24,10 +24,16 @@ from drf_spectacular.views import (
 )
 
 from climate.routes import climate_router
+from climate.viewsets import DeleteAllClimateDataView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include(climate_router.urls)),
+    path(
+        "api/delete-all-climate-data/",
+        DeleteAllClimateDataView.as_view(),
+        name="delete-all-climate-data",
+    ),
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path(
         "api/schema/swagger-ui/",
