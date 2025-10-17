@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 from decouple import Csv, config
@@ -162,24 +163,54 @@ CACHES = {
 CACHE_TTL = 60 * 15
 
 
+# Logging
+LOG_DIR = BASE_DIR / "logs"
+LOG_DIR.mkdir(exist_ok=True)
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "[{asctime}] {levelname} [{name}:{lineno}] {message}",
+            "style": "{",
+        },
+        "simple": {
+            "format": "{levelname}: {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "simple",
+        },
+        "file": {
+            "class": "logging.handlers.RotatingFileHandler",
+            "formatter": "verbose",
+            "filename": os.path.join(LOG_DIR, "app.log"),
+            "maxBytes": 25 * 1024 * 1024,  # 25 MB per file
+            "backupCount": 25,  # keep last 25 logs
+            "encoding": "utf-8",
+        },
+    },
+    "root": {
+        "handlers": ["console", "file"],
+        "level": "INFO",
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console", "file"],
+            "level": "INFO",
+            "propagate": False,
+        },
+        "django.db.backends": {
+            "level": "DEBUG",
+            "handlers": ["console"],
+        },
+    },
+}
+
 # Django extensions
 if DEBUG:
     INSTALLED_APPS.append("django_extensions")
-
-    LOGGING = {
-        "version": 1,
-        "disable_existing_loggers": False,
-        "handlers": {
-            "console": {
-                "level": "DEBUG",
-                "class": "logging.StreamHandler",
-            },
-        },
-        "loggers": {
-            "django.db.backends": {
-                "level": "DEBUG",
-                "handlers": ["console"],
-            },
-        },
-    }
     SHELL_PLUS_PRINT_SQL = True
