@@ -1,6 +1,9 @@
 from django.conf import settings
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
 from climate.filters import ClimateRecordFilter
@@ -11,6 +14,7 @@ from climate.models import (
     ClimateRegion,
     ClimateSeasonal,
 )
+from climate.permissions import IsSuperUser
 from climate.serializers import (
     ClimateMonthlySerializer,
     ClimateParameterSerializer,
@@ -18,6 +22,8 @@ from climate.serializers import (
     ClimateRegionSerializer,
     ClimateSeasonalSerializer,
 )
+
+from .models import ClimateMonthly, ClimateRecord, ClimateSeasonal
 
 # TODO: fix it check why is it not working
 # class CachedReadOnlyModelViewSet(ReadOnlyModelViewSet):
@@ -161,11 +167,7 @@ class ClimateRecordViewSet(ReadOnlyModelViewSet):  # pylint: disable=too-many-an
     """Climate Record ViewSet"""
 
     # queryset = ClimateRecord.objects.all()
-    queryset = (
-        ClimateRecord.objects.select_related("region", "parameter")
-        .all()
-        .order_by("year")
-    )
+    queryset = ClimateRecord.objects.select_related("region", "parameter").all()
     serializer_class = ClimateRecordSerializer
     filterset_class = ClimateRecordFilter
 
@@ -185,3 +187,30 @@ class ClimateRecordViewSet(ReadOnlyModelViewSet):  # pylint: disable=too-many-an
     @method_decorator(cache_page(settings.CACHE_TTL, key_prefix="climate_record_list"))
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
+
+
+class DeleteAllClimateDataView(APIView):
+    """
+    API view to delete all climate data (for superusers only)
+    """
+
+    permission_classes = [IsSuperUser]
+
+    def delete(self, request, *args, **kwargs):
+        """Delete all climate data if the user is a superuser."""
+
+        try:
+            # Deleting all climate records, monthly data, and seasonal data
+            ClimateMonthly.objects.all().delete()
+            ClimateSeasonal.objects.all().delete()
+            ClimateRecord.objects.all().delete()
+
+            return Response(
+                {"detail": "All climate data has been successfully deleted."},
+                status=status.HTTP_204_NO_CONTENT,
+            )
+        except Exception as e:
+            return Response(
+                {"detail": str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )

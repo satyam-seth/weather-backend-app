@@ -1,8 +1,8 @@
-# tests.py
 from unittest.mock import patch
 
 from django.test import TestCase
 
+from climate import Parameter, Region, Season
 from climate.models import (
     ClimateMonthly,
     ClimateParameter,
@@ -20,7 +20,7 @@ class InvalidateClimateRegionCacheTestCase(TestCase):
         """Test that creating a ClimateRegion invalidates the cache."""
 
         # Create a new ClimateRegion
-        ClimateRegion.objects.create(region=ClimateRegion.Region.UK)
+        ClimateRegion.objects.create(region=Region.UK)
 
         # Ensure cache.delete_pattern was called
         mock_cache_delete.assert_called_with("*climate_region*")
@@ -30,10 +30,10 @@ class InvalidateClimateRegionCacheTestCase(TestCase):
         """Test that updating a ClimateRegion invalidates the cache."""
 
         # Create a new ClimateRegion
-        region = ClimateRegion.objects.create(region=ClimateRegion.Region.WALES)
+        region = ClimateRegion.objects.create(region=Region.WALES)
 
         # Trigger an update
-        region.region = ClimateRegion.Region.SCOTLAND
+        region.region = Region.SCOTLAND
         region.save()
 
         # Ensure cache.delete_pattern was called
@@ -44,7 +44,7 @@ class InvalidateClimateRegionCacheTestCase(TestCase):
         """Test that deleting a ClimateRegion invalidates the cache."""
 
         # Create a new ClimateRegion
-        region = ClimateRegion.objects.create(region=ClimateRegion.Region.ENGLAND)
+        region = ClimateRegion.objects.create(region=Region.ENGLAND)
 
         # Delete the ClimateRegion
         region.delete()
@@ -61,7 +61,7 @@ class InvalidateClimateParameterCacheTestCase(TestCase):
         """Test that creating a ClimateParameter invalidates the cache."""
 
         # Create a new ClimateParameter
-        ClimateParameter.objects.create(parameter=ClimateParameter.Parameter.RAINFALL)
+        ClimateParameter.objects.create(parameter=Parameter.RAINFALL)
 
         # Ensure cache.delete_pattern was called with the correct pattern
         mock_cache_delete.assert_called_with("*climate_parameter*")
@@ -71,12 +71,10 @@ class InvalidateClimateParameterCacheTestCase(TestCase):
         """Test that updating a ClimateParameter invalidates the cache."""
 
         # Create a new ClimateParameter
-        param = ClimateParameter.objects.create(
-            parameter=ClimateParameter.Parameter.SUNSHINE
-        )
+        param = ClimateParameter.objects.create(parameter=Parameter.SUNSHINE)
 
         # save to trigger update
-        param.parameter = ClimateParameter.Parameter.TMAX
+        param.parameter = Parameter.TMAX
         param.save()
 
         # Ensure cache.delete_pattern was called with the correct pattern
@@ -87,9 +85,7 @@ class InvalidateClimateParameterCacheTestCase(TestCase):
         """Test that deleting a ClimateParameter invalidates the cache."""
 
         # Create a new ClimateParameter
-        param = ClimateParameter.objects.create(
-            parameter=ClimateParameter.Parameter.RAIN_DAYS
-        )
+        param = ClimateParameter.objects.create(parameter=Parameter.RAIN_DAYS)
 
         # Delete the ClimateParameter
         param.delete()
@@ -102,9 +98,9 @@ class InvalidateClimateSeasonalCacheTestCase(TestCase):
     """Test case for ClimateSeasonal model cache invalidation."""
 
     def setUp(self):
-        self.region = ClimateRegion.objects.create(region=ClimateRegion.Region.UK)
+        self.region = ClimateRegion.objects.create(region=Region.UK)
         self.parameter = ClimateParameter.objects.create(
-            parameter=ClimateParameter.Parameter.RAINFALL,
+            parameter=Parameter.RAINFALL,
         )
         self.record = ClimateRecord.objects.create(
             region=self.region,
@@ -118,7 +114,7 @@ class InvalidateClimateSeasonalCacheTestCase(TestCase):
 
         # Create a new ClimateSeasonal
         ClimateSeasonal.objects.create(
-            season=ClimateSeasonal.Season.win,
+            season=Season.WIN,
             data=12.5,
             record=self.record,
         )
@@ -132,7 +128,7 @@ class InvalidateClimateSeasonalCacheTestCase(TestCase):
 
         # Create a new ClimateSeasonal
         seasonal = ClimateSeasonal.objects.create(
-            season=ClimateSeasonal.Season.win,
+            season=Season.WIN,
             data=12.5,
             record=self.record,
         )
@@ -150,7 +146,7 @@ class InvalidateClimateSeasonalCacheTestCase(TestCase):
 
         # Create a new ClimateSeasonal
         seasonal = ClimateSeasonal.objects.create(
-            season=ClimateSeasonal.Season.ann,
+            season=Season.ANN,
             data=12.5,
             record=self.record,
         )
@@ -168,10 +164,8 @@ class InvalidateClimateRecordCacheTestCase(TestCase):
     def setUp(self):
         """Setup data for tests."""
 
-        self.region = ClimateRegion.objects.create(region=ClimateRegion.Region.UK)
-        self.parameter = ClimateParameter.objects.create(
-            parameter=ClimateParameter.Parameter.RAINFALL
-        )
+        self.region = ClimateRegion.objects.create(region=Region.UK)
+        self.parameter = ClimateParameter.objects.create(parameter=Parameter.RAINFALL)
 
     @patch("django.core.cache.cache.delete_pattern")
     def test_climate_record_create(self, mock_cache_delete):
@@ -227,10 +221,8 @@ class InvalidateClimateMonthlyCacheTestCase(TestCase):
     """Test case for ClimateMonthly model cache invalidation."""
 
     def setUp(self):
-        self.region = ClimateRegion.objects.create(region=ClimateRegion.Region.UK)
-        self.parameter = ClimateParameter.objects.create(
-            parameter=ClimateParameter.Parameter.RAINFALL
-        )
+        self.region = ClimateRegion.objects.create(region=Region.UK)
+        self.parameter = ClimateParameter.objects.create(parameter=Parameter.RAINFALL)
         self.record = ClimateRecord.objects.create(
             region=self.region,
             parameter=self.parameter,

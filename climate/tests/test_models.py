@@ -2,6 +2,7 @@ from django.db import IntegrityError
 from django.test import TestCase
 from django.utils import timezone
 
+from climate import Parameter, Region, Season
 from climate.models import (
     ClimateMonthly,
     ClimateParameter,
@@ -17,10 +18,8 @@ class ClimateRecordModelTest(TestCase):
     def setUp(self):
         """Setup data for tests."""
 
-        self.region = ClimateRegion.objects.create(region=ClimateRegion.Region.UK)
-        self.parameter = ClimateParameter.objects.create(
-            parameter=ClimateParameter.Parameter.RAINFALL
-        )
+        self.region = ClimateRegion.objects.create(region=Region.UK)
+        self.parameter = ClimateParameter.objects.create(parameter=Parameter.RAINFALL)
         self.climate_record = ClimateRecord.objects.create(
             region=self.region,
             parameter=self.parameter,
@@ -71,14 +70,14 @@ class ClimateRegionModelTest(TestCase):
     def test_model_fields(self):
         """Test the fields of the ClimateRecord model."""
 
-        record = ClimateRegion.objects.create(region=ClimateRegion.Region.UK)
+        record = ClimateRegion.objects.create(region=Region.UK)
         # Test that the object is created successfully
-        self.assertEqual(ClimateRegion.Region.UK, record.region)
+        self.assertEqual(Region.UK, record.region)
 
     def test_str_representation(self):
         """Test the string representation of the ClimateRegion model."""
 
-        record = ClimateRegion.objects.create(region=ClimateRegion.Region.UK)
+        record = ClimateRegion.objects.create(region=Region.UK)
         expected_str = "UK"
         self.assertEqual(str(record), expected_str)
 
@@ -89,18 +88,14 @@ class ClimateParameterModelTest(TestCase):
     def test_model_fields(self):
         """Test the fields of the ClimateParameter model."""
 
-        record = ClimateParameter.objects.create(
-            parameter=ClimateParameter.Parameter.RAINFALL
-        )
+        record = ClimateParameter.objects.create(parameter=Parameter.RAINFALL)
         # Test that the object is created successfully
-        self.assertEqual(ClimateParameter.Parameter.RAINFALL, record.parameter)
+        self.assertEqual(Parameter.RAINFALL, record.parameter)
 
     def test_str_representation(self):
         """Test the string representation of the ClimateParameter model."""
 
-        record = ClimateParameter.objects.create(
-            parameter=ClimateParameter.Parameter.RAINFALL
-        )
+        record = ClimateParameter.objects.create(parameter=Parameter.RAINFALL)
         expected_str = "Rainfall"
         self.assertEqual(str(record), expected_str)
 
@@ -109,10 +104,8 @@ class ClimateMonthlyModelTest(TestCase):
     """Climate Monthly Model Test"""
 
     def setUp(self):
-        self.region = ClimateRegion.objects.create(region=ClimateRegion.Region.UK)
-        self.parameter = ClimateParameter.objects.create(
-            parameter=ClimateParameter.Parameter.RAINFALL
-        )
+        self.region = ClimateRegion.objects.create(region=Region.UK)
+        self.parameter = ClimateParameter.objects.create(parameter=Parameter.RAINFALL)
         self.record = ClimateRecord.objects.create(
             region=self.region,
             parameter=self.parameter,
@@ -140,9 +133,9 @@ class ClimateSeasonalModelTest(TestCase):
     """Climate Seasonal Model Test"""
 
     def setUp(self):
-        self.region = ClimateRegion.objects.create(region=ClimateRegion.Region.UK)
+        self.region = ClimateRegion.objects.create(region=Region.UK)
         self.parameter = ClimateParameter.objects.create(
-            parameter=ClimateParameter.Parameter.RAINFALL,
+            parameter=Parameter.RAINFALL,
         )
         self.record = ClimateRecord.objects.create(
             region=self.region,
@@ -154,7 +147,7 @@ class ClimateSeasonalModelTest(TestCase):
         """Test creating a valid ClimateSeasonal instance."""
 
         season = ClimateSeasonal.objects.create(
-            season=ClimateSeasonal.Season.win,
+            season=Season.WIN,
             data=12.5,
             record=self.record,
         )
@@ -166,7 +159,7 @@ class ClimateSeasonalModelTest(TestCase):
         """Test the string representation of the ClimateSeasonal model."""
 
         season = ClimateSeasonal.objects.create(
-            season=ClimateSeasonal.Season.spr,
+            season=Season.SPR,
             data=15.0,
             record=self.record,
         )
