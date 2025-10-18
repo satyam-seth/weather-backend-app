@@ -1,23 +1,29 @@
 import django_filters
 
-from .models import ClimateRecord
+from climate import Parameter, Region
+from climate.models import ClimateRecord
 
 
 class ClimateRecordFilter(django_filters.FilterSet):
     """Climate Record Filter"""
 
-    dataset = django_filters.ChoiceFilter(
-        field_name="dataset",
-        choices=ClimateRecord.Dataset.choices,
-        lookup_expr="iexact",
-    )
+    # Filter by region name (FK → ClimateRegion.region)
     region = django_filters.ChoiceFilter(
-        field_name="region",
-        choices=ClimateRecord.Region.choices,
+        field_name="region__region",  # follow FK
+        choices=Region.choices,
         lookup_expr="iexact",
     )
+
+    # Filter by parameter (FK → ClimateParameter.parameter)
+    parameter = django_filters.ChoiceFilter(
+        field_name="parameter__parameter",
+        choices=Parameter.choices,
+        lookup_expr="iexact",
+    )
+
+    # Filter by year
     year = django_filters.NumberFilter(field_name="year")
 
     class Meta:
         model = ClimateRecord
-        fields = ["dataset", "year"]
+        fields = ["region", "parameter", "year"]
